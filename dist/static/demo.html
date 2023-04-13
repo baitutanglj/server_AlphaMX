@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--        <title>AlphaMX</title>-->
+        <script type="text/javascript" language="javascript" src="./jsme/jsme.nocache.js"></script>
+<!--        <script type="text/javascript" language="javascript" src="https://peter-ertl.com/jsme/JSME_2020-06-11/jsme/jsme.nocache.js"></script>-->
+        <style>
+            .font{
+                text-shadow:5px 5px 5px #535C64, 2px 2px 3px #535C64
+            }
+        </style>
+    </head>
+    <body>
+        <p>
+            Please draw a molecule, click on the 'smiles' button to submit the molecule.
+            <br>
+            Or input a smiles in the smiles textInput,
+            <br>
+            for example: C(=O)(OC(C)(C)C)CCCc1ccc(cc1)N(CCCl)CCCl
+        </p>
+        <div id="jsme_container"></div>
+        <form>
+            <input type="checkbox" id="canonic_check" onclick='show_smiles();'>
+            <label class="font">Canonical SMILES</label>
+        </form>
+        <br>
+<!--        SMILES: <b><span id="smiles_container"></span></b>-->
+
+        <script>
+            var new_smiles
+            //this function will be called after the JavaScriptApplet code has been loaded.
+            function jsmeOnLoad() {
+
+                jsmeApplet = new JSApplet.JSME("jsme_container", "600px", "450px", {
+                    "options": "query,hydrogens,oldlook,marker,markAtomOnly,nocanonize"
+                });
+
+                jsmeApplet.setNotifyStructuralChangeJSfunction("show_smiles");
+
+            }
+
+            var patt = /\[([A-Za-z][a-z]?)H?\d*:\d+\]/g; //regexp pattern for numbered atom
+            function show_smiles() {
+                checkbox = document.getElementById("canonic_check");
+                if (checkbox.checked) {
+                    jsmeApplet.options("canonize");
+                } else {
+                    jsmeApplet.options("nocanonize");
+                }
+                var smiles = jsmeApplet.smiles(); //atom that are colored are numbered
+                new_smiles = smiles.replace(patt, '<em>$1</em>');
+                // new_smiles = new_smiles.replace(/(\*\:\d*)/g,"\[$1\]")
+                document.getElementById("smiles_container").innerHTML = new_smiles
+                return{new_smiles:new_smiles}
+            }
+            function get_smiles(){
+                return new_smiles
+            }
+            function bf(id) {
+                var smi = document.getElementById(id)
+                smi.value = new_smiles
+                console.log(document.getElementById(id).value);
+            }
+
+
+        </script>
+    </body>
+</html>
