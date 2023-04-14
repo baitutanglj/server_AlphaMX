@@ -1,5 +1,6 @@
-# alphamx_vue
+# The web version of the alphamx program is used
 
+The front script is [alphamx_vue](https://github.com/baitutanglj//alphamx_vue.git)
 ## Computer software requirements
 * node (>= v8.9)
 * vue-cli (>= v3.0)
